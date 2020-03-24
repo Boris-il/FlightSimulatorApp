@@ -3,10 +3,76 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:local="clr-namespace:FlightSimulator"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+        Title="MainWindow" Height="600" Width="800">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <m:Map CredentialsProvider="Ajvg4QXjjgVzJ0vo51FH6izLF8haGAv0emj1CG3f2YkBr0qk3Z-9FzooB1cPPvJ4" Height="520" BorderBrush="black" BorderThickness="2"></m:Map>
+
+        <Border Background="Gray"  Grid.Column="1" CornerRadius="10" BorderBrush="Gray" BorderThickness="7" Margin="10">
+            <StackPanel Grid.Column="1" Background="Gray">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="310"/>
+                        <RowDefinition Height="230"/>
+                    </Grid.RowDefinitions>
+                    <Border Background="Black" CornerRadius="10" BorderBrush="Black" BorderThickness="7" Margin="10">
+                        <StackPanel Margin="10" Background="white">
+                            <Label HorizontalAlignment="Center">HeadingDeg</Label>
+                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                            <Label HorizontalAlignment="Center">GroundSpeed</Label>
+                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                            <Label HorizontalAlignment="Center">Altitude</Label>
+                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                            <Label HorizontalAlignment="Center">InternalPitchDeg</Label>
+                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="Black" CornerRadius="10" BorderBrush="Black" BorderThickness="7" Grid.Column="1"  Margin="10">
+                        <StackPanel Grid.Column="1" Margin="10" Background="white">
+                            <Label HorizontalAlignment="Center">VerticalSpeed</Label>
+                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                            <Label HorizontalAlignment="Center">AirSpeed</Label>
+                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                            <Label HorizontalAlignment="Center">InternalRollDeg</Label>
+                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                            <Label HorizontalAlignment="Center">GpsAltitude</Label>
+                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                        </StackPanel>
+                    </Border>
+
+                    <Border Background="Black" CornerRadius="10" BorderBrush="Black" BorderThickness="7" Grid.Row="1" Grid.ColumnSpan="2" Margin="10,10,10,30">
+                        <StackPanel Grid.ColumnSpan="2" Grid.Row="1" Margin="10" Background="white">
+                            <Grid>
+                                <Slider Orientation="Horizontal" Height="130" Margin="10,108,190,-108"/>
+                                <Slider Orientation="Vertical" Height="130" Margin="270,0,0,0"/>
+                                <Label Content="slider1" Margin="0,132,0,-132"/>
+                                <Label Content="slider2" Margin="250,132,-250,-132"/>
+                            </Grid>
+                            
+                        </StackPanel>
+                    </Border>
+                </Grid>
+            </StackPanel>
+        </Border>
+
+
+
+
+
+
+
+
     </Grid>
 </Window>
