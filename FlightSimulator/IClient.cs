@@ -8,6 +8,9 @@ namespace FlightSimulator
 {
     interface IClient
     {
-       
+        void connect(string ip, int port);
+        void disconnect();
+        void write(string commandl);
+        string read();
     }
 }
