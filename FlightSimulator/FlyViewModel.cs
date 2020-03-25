@@ -5,7 +5,7 @@ namespace FlightSimulator
 {
 	class FlyViewModel : INotifyPropertyChanged
 	{
-		private IFlyModel model;
+		public IFlyModel model;
 
 		// constructor
 		public FlyViewModel(IFlyModel a_model)
@@ -23,7 +23,8 @@ namespace FlightSimulator
 
 		public void NotifyPropertyChanged(string propName)
 		{
-			//todo
+			if (this.PropertyChanged != null)
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
 		}
 
 		// Properties

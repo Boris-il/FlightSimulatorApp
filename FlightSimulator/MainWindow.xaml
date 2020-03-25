@@ -15,8 +15,8 @@
 
         <m:Map CredentialsProvider="Ajvg4QXjjgVzJ0vo51FH6izLF8haGAv0emj1CG3f2YkBr0qk3Z-9FzooB1cPPvJ4" Height="520" BorderBrush="black" BorderThickness="2"></m:Map>
 
-        <Border Background="Gray"  Grid.Column="1" CornerRadius="10" BorderBrush="Gray" BorderThickness="7" Margin="10">
-            <StackPanel Grid.Column="1" Background="Gray">
+        <Border Background="Gray"  Grid.Column="1" CornerRadius="10" BorderBrush="black" BorderThickness="7" Margin="10">
+            <StackPanel Grid.Column="1" Background="SandyBrown">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
@@ -26,41 +26,41 @@
                         <RowDefinition Height="310"/>
                         <RowDefinition Height="230"/>
                     </Grid.RowDefinitions>
-                    <Border Background="Black" CornerRadius="10" BorderBrush="Black" BorderThickness="7" Margin="10">
-                        <StackPanel Margin="10" Background="white">
-                            <Label HorizontalAlignment="Center">HeadingDeg</Label>
-                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
-                            <Label HorizontalAlignment="Center">GroundSpeed</Label>
-                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
-                            <Label HorizontalAlignment="Center">Altitude</Label>
-                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
-                            <Label HorizontalAlignment="Center">InternalPitchDeg</Label>
-                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                    <Border Background="SandyBrown" CornerRadius="10" BorderBrush="black" BorderThickness="4" Margin="10">
+                        <StackPanel Margin="10" Background="SandyBrown">
+                            <Label FontSize="16" HorizontalAlignment="Center">HeadingDeg</Label>
+                            <TextBlock Foreground="LightGreen" HorizontalAlignment="Center" Background="SaddleBrown" Margin="10" Text="{Binding VM_HeadingDeg}"></TextBlock>
+                            <Label FontSize="16" HorizontalAlignment="Center">GroundSpeed</Label>
+                            <TextBlock Foreground="LightGreen" HorizontalAlignment="Center" Background="SaddleBrown" Margin="10" Text="{Binding VM_GroundSpeed}"></TextBlock>
+                            <Label FontSize="16" HorizontalAlignment="Center">Altitude</Label>
+                            <TextBlock Foreground="LightGreen" HorizontalAlignment="Center" Background="SaddleBrown" Margin="10" Text="{Binding VM_Altitude}"></TextBlock>
+                            <Label FontSize="16" HorizontalAlignment="Center">InternalPitchDeg</Label>
+                            <TextBlock Foreground="LightGreen" HorizontalAlignment="Center" Background="SaddleBrown" Margin="10" Text="{Binding VM_InternalPitchDeg}"></TextBlock>
                         </StackPanel>
                     </Border>
 
-                    <Border Background="Black" CornerRadius="10" BorderBrush="Black" BorderThickness="7" Grid.Column="1"  Margin="10">
-                        <StackPanel Grid.Column="1" Margin="10" Background="white">
-                            <Label HorizontalAlignment="Center">VerticalSpeed</Label>
-                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
-                            <Label HorizontalAlignment="Center">AirSpeed</Label>
-                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
-                            <Label HorizontalAlignment="Center">InternalRollDeg</Label>
-                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
-                            <Label HorizontalAlignment="Center">GpsAltitude</Label>
-                            <TextBlock Background="Green" Margin="10">"NUMBER"</TextBlock>
+                    <Border Background="SandyBrown" CornerRadius="10" BorderBrush="Black" BorderThickness="4" Grid.Column="1"  Margin="10">
+                        <StackPanel Grid.Column="1" Margin="10" Background="SandyBrown">
+                            <Label FontSize="16" HorizontalAlignment="Center">VerticalSpeed</Label>
+                            <TextBlock Foreground="LightGreen" HorizontalAlignment="Center" Background="SaddleBrown" Margin="10" Text="{Binding VM_VerticalSpeed}"></TextBlock>
+                            <Label FontSize="16" HorizontalAlignment="Center">AirSpeed</Label>
+                            <TextBlock Foreground="LightGreen" HorizontalAlignment="Center" Background="SaddleBrown" Margin="10" Text="{Binding VM_AirSpeed}"></TextBlock>
+                            <Label FontSize="16" HorizontalAlignment="Center">InternalRollDeg</Label>
+                            <TextBlock Foreground="LightGreen" HorizontalAlignment="Center" Background="SaddleBrown" Margin="10" Text="{Binding VM_InternalRollDeg}"></TextBlock>
+                            <Label FontSize="16" HorizontalAlignment="Center">GpsAltitude</Label>
+                            <TextBlock Foreground="LightGreen" HorizontalAlignment="Center" Background="SaddleBrown" Margin="10" Text="{Binding VM_GpsAltitude}"></TextBlock>
                         </StackPanel>
                     </Border>
 
-                    <Border Background="Black" CornerRadius="10" BorderBrush="Black" BorderThickness="7" Grid.Row="1" Grid.ColumnSpan="2" Margin="10,10,10,30">
-                        <StackPanel Grid.ColumnSpan="2" Grid.Row="1" Margin="10" Background="white">
+                    <Border Background="SandyBrown" CornerRadius="10" BorderBrush="Black" BorderThickness="4" Grid.Row="1" Grid.ColumnSpan="2" Margin="10,6,10,38">
+                        <StackPanel Grid.ColumnSpan="2" Grid.Row="1" Margin="10,14,10,6" Background="SandyBrown">
                             <Grid>
-                                <Slider Orientation="Horizontal" Height="130" Margin="10,108,190,-108"/>
-                                <Slider Orientation="Vertical" Height="130" Margin="270,0,0,0"/>
-                                <Label Content="slider1" Margin="0,132,0,-132"/>
-                                <Label Content="slider2" Margin="250,132,-250,-132"/>
+                                <Slider Orientation="Horizontal" Height="130" Margin="10,116,190,-116" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1"/>
+                                <Slider Orientation="Vertical" Height="130" Margin="264,8,6,-8" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1"/>
+                                <Label Content="slider1" Margin="40,140,210,-36" HorizontalAlignment="Center" Width="54"/>
+                                <Label Content="slider2" Margin="254,140,-8,-36" HorizontalAlignment="Center" Width="58"/>
                             </Grid>
-                            
+
                         </StackPanel>
                     </Border>
                 </Grid>
