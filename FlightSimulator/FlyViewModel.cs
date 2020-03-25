@@ -5,7 +5,7 @@ namespace FlightSimulator
 {
 	class FlyViewModel : INotifyPropertyChanged
 	{
-		private IFlyModel model;
+		public IFlyModel model;
 
 		// constructor
 		public FlyViewModel(IFlyModel a_model)

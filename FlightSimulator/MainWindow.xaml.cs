@@ -20,9 +20,14 @@ namespace FlightSimulator
     /// </summary>
     public partial class MainWindow : Window
     {
+        FlyViewModel vm;
         public MainWindow()
         {
             InitializeComponent();
+            vm = new FlyViewModel(new MyFlyModel(new MyTelnetClient()));
+            DataContext = vm;
+            vm.model.connect("127.0.0.1", 5402);
+            vm.model.start();
         }
     }
 }
