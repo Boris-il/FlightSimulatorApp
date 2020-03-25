@@ -26,7 +26,7 @@ namespace FlightSimulator
             InitializeComponent();
             vm = new FlyViewModel(new MyFlyModel(new MyTelnetClient()));
             DataContext = vm;
-            vm.model.connect("127.0.0.1", 5402);
+            vm.model.connect("localhost", 8080);
             vm.model.start();
         }
     }
