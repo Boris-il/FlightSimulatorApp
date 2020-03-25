@@ -23,7 +23,8 @@ namespace FlightSimulator
 
 		public void NotifyPropertyChanged(string propName)
 		{
-			//todo
+			if (this.PropertyChanged != null)
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
 		}
 
 		// Properties
