@@ -26,7 +26,6 @@ namespace FlightSimulator
             {
                 this.tcp_client = new TcpClient(ip, port);
                 this.stream = tcp_client.GetStream();
-
                 Console.WriteLine("Establishing Connection");
                 this.tcp_client.Connect(ip, port);
                 Console.WriteLine("Connected");

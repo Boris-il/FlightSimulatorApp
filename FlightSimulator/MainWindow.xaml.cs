@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -26,8 +27,16 @@ namespace FlightSimulator
             InitializeComponent();
             vm = new FlyViewModel(new MyFlyModel(new MyTelnetClient()));
             DataContext = vm;
-            vm.model.connect("127.0.0.1", 5402);
-            vm.model.start();
+            /*vm.model.connect("localhost", 5401);
+            vm.model.start();*/
+            /*while (true)
+            {
+                Console.WriteLine("{0}", vm.model.HeadingDeg);
+                Console.WriteLine("{0}", vm.model.GroundSpeed);
+                Console.WriteLine("{0}", vm.model.GpsAltitude);
+                Console.WriteLine("{0}", vm.model.InternalPitchDeg);
+                //Thread.Sleep(3000);
+            }*/
         }
     }
 }
