@@ -101,5 +101,21 @@ namespace FlightSimulator
 			}*/
 		}
 
+		public double VM_Throttle
+		{
+			set
+			{
+				model.Throttle = value;
+			}
+		}
+		public double VM_Ailrone
+		{
+			set
+			{
+				model.Ailrone = value;
+			}
+
+		}
+
 	}
 }
