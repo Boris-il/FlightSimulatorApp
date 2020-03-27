@@ -27,8 +27,8 @@ namespace FlightSimulator
             InitializeComponent();
             vm = new FlyViewModel(new MyFlyModel(new MyTelnetClient()));
             DataContext = vm;
-            /*vm.model.connect("localhost", 5401);
-            vm.model.start();*/
+            vm.model.connect("127.0.0.1", 5401);
+            vm.model.start();
             /*while (true)
             {
                 Console.WriteLine("{0}", vm.model.HeadingDeg);
@@ -38,5 +38,18 @@ namespace FlightSimulator
                 //Thread.Sleep(3000);
             }*/
         }
+
+        private void Slider_ValueChanged_Ailrone(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            vm.VM_Ailrone = e.NewValue;
+            //vm.model.update("Ailrone", e.NewValue);
+        }
+
+        private void Slider_ValueChanged_Throttle(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            vm.VM_Throttle = e.NewValue;
+            //vm.model.update("Throttle", e.NewValue);
+        }
+
     }
 }

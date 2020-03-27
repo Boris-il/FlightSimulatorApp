@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Net;
 using System.Net.Sockets;
+using System.Text;
 
 namespace FlightSimulator
 {
@@ -25,10 +27,10 @@ namespace FlightSimulator
             try
             {
                 this.tcp_client = new TcpClient(ip, port);
-                this.stream = tcp_client.GetStream();
                 Console.WriteLine("Establishing Connection");
-                this.tcp_client.Connect(ip, port);
+               // this.tcp_client.Connect(ip, port);
                 Console.WriteLine("Connected");
+                this.stream = tcp_client.GetStream();
             }
             catch
             {
@@ -45,20 +47,22 @@ namespace FlightSimulator
         public string read()
         {
             // Buffer to store the response bytes.
-            Byte[] inData = new byte[256];
+            byte[] inData = new byte[256];
             // String to store the response ASCII representation.
-            String responseData = String.Empty;
+            String responseData;
             // Read the first batch of the TcpServer response bytes.
-            Int32 bytes = stream.Read(inData, 0, inData.Length);
-            responseData = System.Text.Encoding.ASCII.GetString(inData, 0, bytes);
+            int bytes = stream.Read(inData, 0, inData.Length);
+            responseData = Encoding.ASCII.GetString(inData, 0, bytes);
             Console.WriteLine("Received: {0}", responseData);
             return responseData;
         }
 
         public void write(string command)
         {
+            Console.WriteLine(command);
             // Translate the passed message into ASCII and store it as a Byte array
-            Byte[] outData = System.Text.Encoding.ASCII.GetBytes(command);
+            byte[] outData = new byte[1024];
+            outData = Encoding.ASCII.GetBytes(command);
             // Send the message to the connected TcpServer. 
             this.stream.Write(outData, 0, outData.Length);
 

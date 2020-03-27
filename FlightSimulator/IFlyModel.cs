@@ -5,22 +5,24 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows;
 using FlightSimulator;
 
 namespace FlightSimulator
 {
-	
+
 	/*interface INotifyPropertyChanged
 	{
 		event PropertyChangedEventHandler propertyChanged;
 	}*/
 	//public delegate void propertyChangedEventHandler(Object sender, PropertyChangedEventArgs e);
 	interface IFlyModel : INotifyPropertyChanged
-    {
+	{
 		// connection to the simulator
 		void connect(string ip, int port);
 		void disconnect();
 		void start();
+		//void update(string prop, double e);
 
 		// Dashboard properties
 		double HeadingDeg { set; get; }
@@ -35,24 +37,27 @@ namespace FlightSimulator
 		// movement
 		/*void move(double speed, int angle);
 		void moveArm(int az, int e1, int e2, bool grip);*/
+
+		double Throttle { set; get; }
+		double Ailrone { set; get; }
 	}
 
-    class MyFlyModel : IFlyModel
-    {
+	class MyFlyModel : IFlyModel
+	{
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		IClient telnetClient;
-        volatile Boolean stop;
+		volatile Boolean stop;
 
 		public MyFlyModel(IClient client)
 		{
 			this.telnetClient = client;
 			this.stop = false;
 		}
-        public void connect(string ip, int port)
-        {
+		public void connect(string ip, int port)
+		{
 			telnetClient.connect(ip, port);
-        }
+		}
 		public void disconnect()
 		{
 			this.stop = true;
@@ -66,30 +71,36 @@ namespace FlightSimulator
 				while (!stop)
 				{
 					//todo path
-					telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg");
-					headingDeg = Double.Parse(telnetClient.read());
+					try
+					{
+						telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
+						HeadingDeg = Double.Parse(telnetClient.read());
 
-					telnetClient.write("get /instrumentation/gps/indicated-vertical-speed");
-					verticalSpeed = Double.Parse(telnetClient.read());
+						telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");
+						VerticalSpeed = Double.Parse(telnetClient.read());
 
-					telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt");
-					groundSpeed = Double.Parse(telnetClient.read());
+						telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");
+						GroundSpeed = Double.Parse(telnetClient.read());
 
-					telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt");
-					airSpeed = Double.Parse(telnetClient.read());
+						telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
+						AirSpeed = Double.Parse(telnetClient.read());
 
-					telnetClient.write("get /instrumentation/gps/indicated-altitude-ft");
-					altitude = Double.Parse(telnetClient.read());
+						telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");
+						Altitude = Double.Parse(telnetClient.read());
 
-					telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg");
-					internalRollDeg = Double.Parse(telnetClient.read());
+						telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
+						InternalRollDeg = Double.Parse(telnetClient.read());
 
-					telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg");
-					internalPitchDeg = Double.Parse(telnetClient.read());
+						telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
+						InternalPitchDeg = Double.Parse(telnetClient.read());
 
-					telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft");
-					gpsAltitude = Double.Parse(telnetClient.read());
-
+						telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");
+						GpsAltitude = Double.Parse(telnetClient.read());
+					} catch
+					{
+						continue;
+					}
+					
 					Thread.Sleep(250);
 				}
 			}).Start();
@@ -98,8 +109,39 @@ namespace FlightSimulator
 		public void NotifyPropertyChanged(string propName)
 		{
 			if (this.PropertyChanged != null)
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+			{
+				switch (propName)
+				{
+					case "Ailrone":
+						this.telnetClient.write("set /controls/flight/aileron " + Ailrone + "\n");
+						break;
+					case "Throttle":
+						this.telnetClient.write("set /controls/engines/current-engine/throttle " + Throttle + "\n");
+						break;
+					default:
+						this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
+						break;
+				}
+			}
+				
 		}
+
+		/*public void update(string prop, double e)
+		{
+			new Thread(delegate ()
+			{
+				switch (prop)
+				{
+					case "Ailrone":
+						this.telnetClient.write("set /controls/flight/aileron " + e + "\n");
+						break;
+					case "Throttle":
+						this.telnetClient.write("set /controls/engines/current-engine/throttle " + e + "\n");
+						break;
+				}
+			}).Start();
+			
+		}*/
 
 		private double headingDeg;
 		private double verticalSpeed;
@@ -109,6 +151,9 @@ namespace FlightSimulator
 		private double internalRollDeg;
 		private double internalPitchDeg;
 		private double gpsAltitude;
+
+		private double throttle;
+		private double ailrone;
 
 		public double HeadingDeg
 		{
@@ -183,5 +228,31 @@ namespace FlightSimulator
 			}
 		}
 
+		public double Throttle
+		{
+			get
+			{
+				return throttle;
+			}
+			set
+			{
+				throttle = value;
+				NotifyPropertyChanged("Throttle");
+			}
+
+		}
+		public double Ailrone
+		{
+			get
+			{
+				return ailrone;
+			}
+			set
+			{
+				ailrone = value;
+				NotifyPropertyChanged("Ailrone");
+			}
+
+		}
 	}
 }

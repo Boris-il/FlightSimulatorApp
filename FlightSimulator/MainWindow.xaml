@@ -55,10 +55,11 @@
                     <Border Background="SandyBrown" CornerRadius="10" BorderBrush="Black" BorderThickness="4" Grid.Row="1" Grid.ColumnSpan="2" Margin="10,6,10,38">
                         <StackPanel Grid.ColumnSpan="2" Grid.Row="1" Margin="10,14,10,6" Background="SandyBrown">
                             <Grid>
-                                <Slider Orientation="Horizontal" Height="130" Margin="10,116,190,-116" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1"/>
-                                <Slider Orientation="Vertical" Height="130" Margin="264,8,6,-8" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1"/>
-                                <Label Content="slider1" Margin="40,140,210,-36" HorizontalAlignment="Center" Width="54"/>
-                                <Label Content="slider2" Margin="254,140,-8,-36" HorizontalAlignment="Center" Width="58"/>
+                                <Slider Value="{Binding VM_Ailrone}" ValueChanged="Slider_ValueChanged_Ailrone" Orientation="Horizontal" Margin="10,116,190,-116" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1" Height="130" VerticalAlignment="Top"/>
+                                <Slider Value="{Binding VM_Throttle}" ValueChanged="Slider_ValueChanged_Throttle" Orientation="Vertical" Height="130" Margin="264,8,6,-8" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1"/>
+                                <Label Content="Ailrone" Margin="40,140,210,-36" HorizontalAlignment="Center" Width="54"/>
+                                <Label Content="Throttle" Margin="254,140,-8,-36" HorizontalAlignment="Center" Width="58"/>
+
                             </Grid>
 
                         </StackPanel>
