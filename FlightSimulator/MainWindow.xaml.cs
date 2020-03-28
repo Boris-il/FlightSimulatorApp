@@ -22,23 +22,14 @@ namespace FlightSimulator
     public partial class MainWindow : Window
     {
         FlyViewModel vm;
+
         public MainWindow()
         {
             InitializeComponent();
             vm = new FlyViewModel(new MyFlyModel(new MyTelnetClient()));
             DataContext = vm;
-            vm.model.connect("127.0.0.1", 5401);
+            vm.model.connect("127.0.0.1", 5402);
             vm.model.start();
-            /*while (true)
-            {
-                *//*Console.WriteLine("{0}", vm.model.HeadingDeg);
-                Console.WriteLine("{0}", vm.model.GroundSpeed);
-                Console.WriteLine("{0}", vm.model.GpsAltitude);
-                Console.WriteLine("{0}", vm.model.InternalPitchDeg);
-                //Thread.Sleep(3000);*//*
-               
-              
-            }*/
         }
 
         private void Slider_ValueChanged_Ailrone(object sender, RoutedPropertyChangedEventArgs<double> e)
