@@ -11,10 +11,6 @@ using FlightSimulator;
 namespace FlightSimulator
 {
 
-	/*interface INotifyPropertyChanged
-	{
-		event PropertyChangedEventHandler propertyChanged;
-	}*/
 	//public delegate void propertyChangedEventHandler(Object sender, PropertyChangedEventArgs e);
 	interface IFlyModel : INotifyPropertyChanged
 	{
