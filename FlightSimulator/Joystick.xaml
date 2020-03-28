@@ -6,7 +6,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <Canvas  x:Name="Base" Margin="0" Width="340" Height="340">
+        <Canvas  x:Name="Base" Margin="230,55" Width="340" Height="340">
             <Ellipse HorizontalAlignment="Left" Height="340" VerticalAlignment="Top" Width="340">
                 <Ellipse.Fill>
                     <RadialGradientBrush>
@@ -87,7 +87,7 @@
                         </TransformGroup>
                     </Ellipse.RenderTransform>
                 </Ellipse>
-                <Ellipse HorizontalAlignment="Left" Height="72.722" VerticalAlignment="Top" Width="72.936" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Canvas.Left="0.631" Canvas.Top="4.896">
+                <Ellipse HorizontalAlignment="Left" Height="72.722" VerticalAlignment="Top" Width="72.936" RenderTransformOrigin="0.5,0.5" UseLayoutRounding="False" d:LayoutRounding="Auto" Canvas.Left="1.5" Canvas.Top="5">
                     <Ellipse.Fill>
                         <RadialGradientBrush>
                             <GradientStop Color="#9A909090" Offset="1" />
@@ -116,7 +116,7 @@
                     <TranslateTransform x:Name="knobPosition" />
                 </Canvas.RenderTransform>
                 <Canvas.Resources>
-<!-->
+                    <!-->
                     <Storyboard x:Key="CenterKnob" Name="centerKnob" Completed="centerKnob_Completed">
 
                         <DoubleAnimation Storyboard.TargetName="knobPosition"

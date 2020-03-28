@@ -31,11 +31,13 @@ namespace FlightSimulator
             vm.model.start();
             /*while (true)
             {
-                Console.WriteLine("{0}", vm.model.HeadingDeg);
+                *//*Console.WriteLine("{0}", vm.model.HeadingDeg);
                 Console.WriteLine("{0}", vm.model.GroundSpeed);
                 Console.WriteLine("{0}", vm.model.GpsAltitude);
                 Console.WriteLine("{0}", vm.model.InternalPitchDeg);
-                //Thread.Sleep(3000);
+                //Thread.Sleep(3000);*//*
+               
+              
             }*/
         }
 
