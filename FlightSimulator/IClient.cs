@@ -53,20 +53,20 @@ namespace FlightSimulator
             // Read the first batch of the TcpServer response bytes.
             int bytes = stream.Read(inData, 0, inData.Length);
             responseData = Encoding.ASCII.GetString(inData, 0, bytes);
-            Console.WriteLine("Received: {0}", responseData);
+            //Console.WriteLine("Received: {0}", responseData);
             return responseData;
         }
 
         public void write(string command)
         {
-            Console.WriteLine(command);
+            //Console.WriteLine(command);
             // Translate the passed message into ASCII and store it as a Byte array
             byte[] outData = new byte[1024];
             outData = Encoding.ASCII.GetBytes(command);
             // Send the message to the connected TcpServer. 
             this.stream.Write(outData, 0, outData.Length);
 
-            Console.WriteLine("Sent: {0}", outData);
+            //Console.WriteLine("Sent: {0}", outData);
         }
     }
 }

@@ -26,11 +26,13 @@ namespace FlightSimulator
           InitializeComponent();
         }
 
-        private double x, y, x1, y1;
+        Point start = new Point();
+        Point current = new Point();
+        private double x1, y1;
         bool mousePressed;
-        
 
-        private void KnobBase_MouseUp(object sender, MouseButtonEventArgs e)
+
+        private void Knob_MouseUp(object sender, MouseButtonEventArgs e)
         {
             this.mousePressed = false;
             centerKnob_Completed(sender, e); //check
@@ -38,16 +40,18 @@ namespace FlightSimulator
 
         private void centerKnob_Completed(object sender, EventArgs e)
         {
-           // to do
-
+            Canvas.SetLeft(Knob, 125);
+            Canvas.SetTop(Knob, 125);
         }
 
         private void Knob_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if(!mousePressed)
             {
-                this.x = e.GetPosition(sender as Ellipse).X;
-                this.y = e.GetPosition(sender as Ellipse).Y;
+                // set initial mouse coordinates
+                this.start.X = e.GetPosition(sender as Canvas).X;
+                this.start.Y = e.GetPosition(sender as Canvas).Y;
+                Console.WriteLine("start X: {0}, start Y: {1}", this.start.X, this.start.Y);
                 this.mousePressed = true;
             }
         }
@@ -56,11 +60,13 @@ namespace FlightSimulator
         {
             if (this.mousePressed)
             {
-                Ellipse eli = (sender as Ellipse);
-                x1 = e.GetPosition(eli).X;
-                y1 = e.GetPosition(eli).Y;
-                double radius = getRadius(x, y, x1, y1);
-                
+                this.current.X = e.GetPosition(sender as Canvas).X;
+                this.current.Y = e.GetPosition(sender as Canvas).Y;
+                Console.WriteLine("current X: {0}, current Y: {1}", this.current.X, this.current.Y);
+
+                Canvas.SetLeft(Knob, this.current.X);
+                Canvas.SetTop(Knob, this.current.Y);
+                //double radius = getRadius(x, y, x1, y1);
             }
         }
 
