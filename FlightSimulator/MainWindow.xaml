@@ -14,13 +14,7 @@
         </Grid.ColumnDefinitions>
 
         <m:Map CredentialsProvider="Ajvg4QXjjgVzJ0vo51FH6izLF8haGAv0emj1CG3f2YkBr0qk3Z-9FzooB1cPPvJ4" Height="520" BorderBrush="black" BorderThickness="2">
-
-
-
-            <m:Pushpin Name="pos" Location="{Binding VM_Location}"></m:Pushpin>
-                    
-                
-            
+            <m:Pushpin  Location="{Binding VM_Location}"></m:Pushpin>
         </m:Map>
 
         <Border Background="Gray"  Grid.Column="1" CornerRadius="10" BorderBrush="black" BorderThickness="7" Margin="10">

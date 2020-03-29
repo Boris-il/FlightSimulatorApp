@@ -68,5 +68,10 @@ namespace FlightSimulator
         {
             return Math.Sqrt((x1 - x) * (x1 - x) + (y1 - y) * (y1 - y));
         }
+
+        private void KnobBase_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //todo
+        }
     }
 }
