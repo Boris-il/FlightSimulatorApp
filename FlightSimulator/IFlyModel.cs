@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using FlightSimulator;
+using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulator
 {
@@ -29,6 +30,9 @@ namespace FlightSimulator
 		double InternalRollDeg { set; get; }
 		double InternalPitchDeg { set; get; }
 		double GpsAltitude { set; get; }
+		double Latitude { set; get; }
+		double Longitude { set; get; }
+		Location Location { get; set; }
 
 		// movement
 		/*void move(double speed, int angle);
@@ -92,6 +96,12 @@ namespace FlightSimulator
 
 						telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");
 						GpsAltitude = Double.Parse(telnetClient.read());
+
+						telnetClient.write("get /position/longitude-deg\n");
+						Longitude = Double.Parse(telnetClient.read());
+
+						telnetClient.write("get /position/latitude-deg\n");
+						Latitude = Double.Parse(telnetClient.read());
 					} catch
 					{
 						continue;
@@ -147,6 +157,10 @@ namespace FlightSimulator
 		private double internalRollDeg;
 		private double internalPitchDeg;
 		private double gpsAltitude;
+
+		private double latitude;
+		private double longitude;
+		private Location location;
 
 		private double throttle;
 		private double ailrone;
@@ -222,6 +236,38 @@ namespace FlightSimulator
 				gpsAltitude = value;
 				NotifyPropertyChanged("GpsAltitude");
 			}
+		}
+
+		public double Latitude
+		{
+			get { return latitude; }
+			set
+			{
+				latitude = value;
+				NotifyPropertyChanged("Location");
+				//Location.Latitude = value;
+			}
+		}
+		public double Longitude
+		{
+			get { return longitude; }
+			set
+			{
+				longitude = value;
+				NotifyPropertyChanged("Location");
+				//Location.Longitude = value;
+			}
+		}
+
+		public Location Location
+		{
+			get { return new Location(latitude, longitude); }
+			set
+			{
+				location = value;
+				NotifyPropertyChanged("Location");
+			}
+
 		}
 
 		public double Throttle

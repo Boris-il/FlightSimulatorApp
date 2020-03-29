@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Maps.MapControl.WPF;
+using System;
 using System.ComponentModel;
 
 namespace FlightSimulator
@@ -100,6 +101,22 @@ namespace FlightSimulator
 				NotifyPropertyChanged("GpsAltitude");
 			}*/
 		}
+
+		public double VM_Latitude
+		{
+			get { return this.model.Latitude; }
+		}
+		public double VM_Longitude
+		{
+			get { return this.model.Longitude; }
+		}
+
+		public Location VM_Location
+		{
+			get
+			{ return this.model.Location; }
+		}
+
 
 		public double VM_Throttle
 		{
