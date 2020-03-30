@@ -66,5 +66,10 @@ namespace FlightSimulator
                 }
             }
         }
+
+        private void KnobBase_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            //todo
+        }
     }
 }

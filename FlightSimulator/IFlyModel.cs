@@ -120,9 +120,11 @@ namespace FlightSimulator
 				{
 					case "Ailrone":
 						this.telnetClient.write("set /controls/flight/aileron " + Ailrone + "\n");
+						this.telnetClient.read();
 						break;
 					case "Throttle":
 						this.telnetClient.write("set /controls/engines/current-engine/throttle " + Throttle + "\n");
+						this.telnetClient.read();
 						break;
 					default:
 						this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
