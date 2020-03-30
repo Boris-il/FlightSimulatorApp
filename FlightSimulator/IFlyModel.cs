@@ -116,20 +116,7 @@ namespace FlightSimulator
 		{
 			if (this.PropertyChanged != null)
 			{
-				switch (propName)
-				{
-					case "Ailrone":
-						this.telnetClient.write("set /controls/flight/aileron " + Ailrone + "\n");
-						this.telnetClient.read();
-						break;
-					case "Throttle":
-						this.telnetClient.write("set /controls/engines/current-engine/throttle " + Throttle + "\n");
-						this.telnetClient.read();
-						break;
-					default:
-						this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
-						break;
-				}
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
 			}
 				
 		}
@@ -281,7 +268,10 @@ namespace FlightSimulator
 			set
 			{
 				throttle = value;
-				NotifyPropertyChanged("Throttle");
+				//NotifyPropertyChanged("Throttle");
+				this.telnetClient.write("set /controls/engines/current-engine/throttle " + Throttle + "\n");
+				this.telnetClient.read();
+
 			}
 
 		}
@@ -294,7 +284,10 @@ namespace FlightSimulator
 			set
 			{
 				ailrone = value;
-				NotifyPropertyChanged("Ailrone");
+				//NotifyPropertyChanged("Ailrone");
+				this.telnetClient.write("set /controls/flight/aileron " + Ailrone + "\n");
+				this.telnetClient.read();
+
 			}
 
 		}

@@ -56,6 +56,12 @@ namespace FlightSimulator
 				NotifyPropertyChanged("GroundSpeed");
 			}*/
 		}
+
+		/*public void AilroneChanged(double newValue)
+		{
+			VM_Ailrone = newValue;
+		}*/
+
 		public double VM_AirSpeed
 		{
 			get { return this.model.AirSpeed; }
@@ -123,6 +129,7 @@ namespace FlightSimulator
 			set
 			{
 				model.Throttle = value;
+				NotifyPropertyChanged("Throttle");
 			}
 		}
 		public double VM_Ailrone
@@ -130,6 +137,8 @@ namespace FlightSimulator
 			set
 			{
 				model.Ailrone = value;
+				NotifyPropertyChanged("Ailrone");
+				//AilroneChanged(value);
 			}
 
 		}

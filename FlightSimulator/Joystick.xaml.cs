@@ -24,6 +24,7 @@ namespace FlightSimulator
         public Joystick()
         {
           InitializeComponent();
+            DataContext = "{Binding RelativeSource={vm}}";
         }
 
         Point start = new Point();

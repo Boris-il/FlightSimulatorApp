@@ -27,22 +27,30 @@ namespace FlightSimulator
         {
             InitializeComponent();
             vm = new FlyViewModel(new MyFlyModel(new MyTelnetClient()));
+
+            /*model = new MyTelnetClient();
+
+            vm1 = new FlyViewModel(model);
+            vm2 = new JoyViewModel(model);*/
+
+
             DataContext = vm;
             vm.model.connect("127.0.0.1", 5402);
             vm.model.start();
         }
 
-        private void Slider_ValueChanged_Ailrone(object sender, RoutedPropertyChangedEventArgs<double> e)
+     /*   private void Slider_ValueChanged_Ailrone(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            vm.VM_Ailrone = e.NewValue;
+            //vm.AilroneChanged(e.NewValue);
+            //vm.VM_Ailrone = e.NewValue;
             //vm.model.update("Ailrone", e.NewValue);
-        }
+        }*/
 
-        private void Slider_ValueChanged_Throttle(object sender, RoutedPropertyChangedEventArgs<double> e)
+        /*private void Slider_ValueChanged_Throttle(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             vm.VM_Throttle = e.NewValue;
             //vm.model.update("Throttle", e.NewValue);
-        }
+        }*/
 
     }
 }
