@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:m="clr-namespace:Microsoft.Maps.MapControl.WPF;assembly=Microsoft.Maps.MapControl.WPF"
         xmlns:local="clr-namespace:FlightSimulator"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="600" Width="800">
     <Grid Margin="10">
@@ -12,8 +13,12 @@
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
+        <Button Margin="0,0,286,504" TextBlock.FontSize="16" TextBlock.FontWeight="Bold"  Background="LimeGreen">Connect</Button>
+        <Button Margin="0,47,286,457" TextBlock.FontSize="16" TextBlock.FontWeight="Bold"  Background="Red">Disconnect</Button>
+        <TextBox Margin="119,25,10,457" Text="{Binding Source={x:Static sys:DateTime.Now}, Mode=OneWay}"></TextBox>
 
-        <m:Map CredentialsProvider="Ajvg4QXjjgVzJ0vo51FH6izLF8haGAv0emj1CG3f2YkBr0qk3Z-9FzooB1cPPvJ4" Height="520" BorderBrush="black" BorderThickness="2">
+        <Label Margin="115,0,217,504" VerticalAlignment="Center" Height="45">Alarms:</Label>
+        <m:Map CredentialsProvider="Ajvg4QXjjgVzJ0vo51FH6izLF8haGAv0emj1CG3f2YkBr0qk3Z-9FzooB1cPPvJ4" BorderBrush="black" BorderThickness="2" Margin="0,97,0,15">
             <m:Pushpin  Location="{Binding VM_Location}"></m:Pushpin>
         </m:Map>
 
@@ -58,11 +63,11 @@
                         <StackPanel Grid.ColumnSpan="2" Grid.Row="1" Margin="10,14,10,6" Background="SandyBrown">
                             <Grid>
                                 <Viewbox Height="150" Width="150" Margin="60,0,0,0">
-                                    <local:Joystick></local:Joystick>
+                                    <local:Joystick x:Name="joystick1"></local:Joystick>
                                 </Viewbox>
-                                <Slider Value="{Binding VM_Ailrone}" Orientation="Horizontal" Margin="10,116,190,-116" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1" Height="130" VerticalAlignment="Top"/>
-                                <Slider Value="{Binding VM_Throttle}" Orientation="Vertical" Height="130" Margin="264,8,6,-8" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1"/>
-                                <Label Content="Ailrone" Margin="40,140,210,-36" HorizontalAlignment="Center" Width="54"/>
+                                <Slider ValueChanged="Slider_ValueChanged_Aileron" Orientation="Horizontal" Margin="10,116,190,-116" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1" Height="130" VerticalAlignment="Top"/>
+                                <Slider ValueChanged="Slider_ValueChanged_Throttle" Orientation="Vertical" Height="130" Margin="264,8,6,-8" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1"/>
+                                <Label Content="Aileron" Margin="40,140,210,-36" HorizontalAlignment="Center" Width="54"/>
                                 <Label Content="Throttle" Margin="254,140,-8,-36" HorizontalAlignment="Center" Width="58"/>
 
                             </Grid>

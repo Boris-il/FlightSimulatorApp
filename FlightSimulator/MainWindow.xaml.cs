@@ -22,35 +22,31 @@ namespace FlightSimulator
     public partial class MainWindow : Window
     {
         FlyViewModel vm;
+        JoystickViewModel j_vm;
 
         public MainWindow()
         {
             InitializeComponent();
-            vm = new FlyViewModel(new MyFlyModel(new MyTelnetClient()));
 
-            /*model = new MyTelnetClient();
+            IFlyModel model = new MyFlyModel(new MyTelnetClient());
 
-            vm1 = new FlyViewModel(model);
-            vm2 = new JoyViewModel(model);*/
-
+            vm = new FlyViewModel(model);
+            j_vm = new JoystickViewModel(model);
+            joystick1.DataContext = j_vm;
 
             DataContext = vm;
-            vm.model.connect("127.0.0.1", 5402);
-            vm.model.start();
+            /*vm.model.connect("127.0.0.1", 5402);
+            vm.model.start();*/
         }
 
-     /*   private void Slider_ValueChanged_Ailrone(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void Slider_ValueChanged_Aileron(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            //vm.AilroneChanged(e.NewValue);
-            //vm.VM_Ailrone = e.NewValue;
-            //vm.model.update("Ailrone", e.NewValue);
-        }*/
+            this.j_vm.updateAileron(e.NewValue);
+        }
 
-        /*private void Slider_ValueChanged_Throttle(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void Slider_ValueChanged_Throttle(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            vm.VM_Throttle = e.NewValue;
-            //vm.model.update("Throttle", e.NewValue);
-        }*/
-
+            this.j_vm.updateThrottle(e.NewValue);
+        }
     }
 }
