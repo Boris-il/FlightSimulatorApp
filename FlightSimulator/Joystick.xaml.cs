@@ -47,6 +47,7 @@ namespace FlightSimulator
 
         private void Knob_MouseMove(object sender, MouseEventArgs e)
         {
+            double d;
             if (this.mousePressed)
             {
                 //Console.WriteLine("current X: {0}, current Y: {1}", knobPosition.X, knobPosition.Y);
@@ -55,15 +56,19 @@ namespace FlightSimulator
                 this.current.Y = e.GetPosition(this).Y - this.start.Y;
 
                 // limit the movement of the knob
-                if (Math.Sqrt(this.current.X * this.current.X + this.current.Y * this.current.Y) < (BlackBase.Width / 2))
+                if ((d = Math.Sqrt(this.current.X * this.current.X + this.current.Y * this.current.Y)) < (BlackBase.Width / 2))
                 {
                     knobPosition.X = this.current.X;
                     knobPosition.Y = this.current.Y;
                 }
                 else
                 {
-                    this.mousePressed = false;
-                    centerKnob_Completed(sender, e);
+                    if (d > (BlackBase.Width / 2) + 20)
+                    {
+                        this.mousePressed = false;
+                        centerKnob_Completed(sender, e);
+                    }
+                    
                 }
             }
         }
@@ -72,5 +77,7 @@ namespace FlightSimulator
         {
             //todo
         }
+
+        
     }
 }

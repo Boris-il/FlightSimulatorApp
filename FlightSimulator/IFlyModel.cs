@@ -34,12 +34,15 @@ namespace FlightSimulator
 		double Longitude { set; get; }
 		Location Location { get; set; }
 
+		double Elevator { get; set; }
+		double Rudder { get; set; }
+
 		// movement
 		/*void move(double speed, int angle);
 		void moveArm(int az, int e1, int e2, bool grip);*/
 
 		double Throttle { set; get; }
-		double Ailrone { set; get; }
+		double Aileron { set; get; }
 	}
 
 	class MyFlyModel : IFlyModel
@@ -116,20 +119,7 @@ namespace FlightSimulator
 		{
 			if (this.PropertyChanged != null)
 			{
-				switch (propName)
-				{
-					case "Ailrone":
-						this.telnetClient.write("set /controls/flight/aileron " + Ailrone + "\n");
-						this.telnetClient.read();
-						break;
-					case "Throttle":
-						this.telnetClient.write("set /controls/engines/current-engine/throttle " + Throttle + "\n");
-						this.telnetClient.read();
-						break;
-					default:
-						this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
-						break;
-				}
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
 			}
 				
 		}
@@ -165,7 +155,10 @@ namespace FlightSimulator
 		private Location location;
 
 		private double throttle;
-		private double ailrone;
+		private double aileron;
+
+		private double elevator;
+		private double rudder;
 
 		public double HeadingDeg
 		{
@@ -281,22 +274,52 @@ namespace FlightSimulator
 			set
 			{
 				throttle = value;
-				NotifyPropertyChanged("Throttle");
+				this.telnetClient.write("set /controls/engines/current-engine/throttle " + Throttle + "\n");
+				this.telnetClient.read();
+
 			}
 
 		}
-		public double Ailrone
+		public double Aileron
 		{
 			get
 			{
-				return ailrone;
+				return aileron;
 			}
 			set
 			{
-				ailrone = value;
-				NotifyPropertyChanged("Ailrone");
+				aileron = value;
+				this.telnetClient.write("set /controls/flight/aileron " + Aileron + "\n");
+				this.telnetClient.read();
 			}
+		}
 
+		public double Elevator
+		{
+			get
+			{
+				return elevator;
+			}
+			set
+			{
+				elevator = value;
+				this.telnetClient.write("set /controls/flight/elevator " + Elevator + "\n");
+				this.telnetClient.read();
+
+			}
+		}
+		public double Rudder
+		{
+			get
+			{
+				return rudder;
+			}
+			set
+			{
+				rudder = value;
+				this.telnetClient.write("set /controls/flight/rudder " + Rudder + "\n");
+				this.telnetClient.read();
+			}
 		}
 	}
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Maps.MapControl.WPF;
 using System;
 using System.ComponentModel;
+using System.Windows;
 
 namespace FlightSimulator
 {
@@ -56,6 +57,14 @@ namespace FlightSimulator
 				NotifyPropertyChanged("GroundSpeed");
 			}*/
 		}
+
+		
+
+		/*public void AilroneChanged(double newValue)
+		{
+			VM_Ailrone = newValue;
+		}*/
+
 		public double VM_AirSpeed
 		{
 			get { return this.model.AirSpeed; }
@@ -118,21 +127,6 @@ namespace FlightSimulator
 		}
 
 
-		public double VM_Throttle
-		{
-			set
-			{
-				model.Throttle = value;
-			}
-		}
-		public double VM_Ailrone
-		{
-			set
-			{
-				model.Ailrone = value;
-			}
-
-		}
 
 	}
 }
