@@ -15,9 +15,10 @@
         </Grid.ColumnDefinitions>
         <Button Margin="0,0,286,504" TextBlock.FontSize="16" TextBlock.FontWeight="Bold"  Background="LimeGreen">Connect</Button>
         <Button Margin="0,47,286,457" TextBlock.FontSize="16" TextBlock.FontWeight="Bold"  Background="Red">Disconnect</Button>
-        <TextBox Margin="119,25,10,457" Text="{Binding Source={x:Static sys:DateTime.Now}, Mode=OneWay}"></TextBox>
+        <TextBox x:Name="logBox" Margin="119,27,10,457" Text="{Binding VM_MessageString, Mode=OneWay}"></TextBox>
+        <Button Margin="313,5,10,528" TextBlock.FontSize="11" Click="Button_Click">Clear Log</Button>
 
-        <Label Margin="115,0,217,504" VerticalAlignment="Center" Height="45">Alarms:</Label>
+        <Label Margin="115,1,201,505" TextBlock.FontWeight="Bold" VerticalAlignment="Center" Height="45">Flight Log:</Label>
         <m:Map CredentialsProvider="Ajvg4QXjjgVzJ0vo51FH6izLF8haGAv0emj1CG3f2YkBr0qk3Z-9FzooB1cPPvJ4" BorderBrush="black" BorderThickness="2" Margin="0,97,0,15">
             <m:Pushpin  Location="{Binding VM_Location}"></m:Pushpin>
         </m:Map>

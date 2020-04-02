@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using FlightSimulator;
 using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulator
@@ -34,15 +28,17 @@ namespace FlightSimulator
 		double Longitude { set; get; }
 		Location Location { get; set; }
 
+		// Controlling preperties
 		double Elevator { get; set; }
 		double Rudder { get; set; }
-
-		// movement
-		/*void move(double speed, int angle);
-		void moveArm(int az, int e1, int e2, bool grip);*/
-
 		double Throttle { set; get; }
 		double Aileron { set; get; }
+
+		string MessageString { get; set; }
+
+
+
+
 	}
 
 	class MyFlyModel : IFlyModel
@@ -51,6 +47,28 @@ namespace FlightSimulator
 
 		IClient telnetClient;
 		volatile Boolean stop;
+
+		// Dashboard members
+		private double headingDeg;
+		private double verticalSpeed;
+		private double groundSpeed;
+		private double airSpeed;
+		private double altitude;
+		private double internalRollDeg;
+		private double internalPitchDeg;
+		private double gpsAltitude;
+
+		private double latitude;
+		private double longitude;
+		private Location location;
+
+		// Controlling members
+		private double throttle;
+		private double aileron;
+		private double elevator;
+		private double rudder;
+
+		private string messageString;
 
 		public MyFlyModel(IClient client)
 		{
@@ -73,43 +91,126 @@ namespace FlightSimulator
 			{
 				while (!stop)
 				{
-					//todo path
 					try
 					{
 						telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
 						HeadingDeg = Double.Parse(telnetClient.read());
-
-						telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");
-						VerticalSpeed = Double.Parse(telnetClient.read());
-
-						telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");
-						GroundSpeed = Double.Parse(telnetClient.read());
-
-						telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
-						AirSpeed = Double.Parse(telnetClient.read());
-
-						telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");
-						Altitude = Double.Parse(telnetClient.read());
-
-						telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
-						InternalRollDeg = Double.Parse(telnetClient.read());
-
-						telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
-						InternalPitchDeg = Double.Parse(telnetClient.read());
-
-						telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");
-						GpsAltitude = Double.Parse(telnetClient.read());
-
-						telnetClient.write("get /position/longitude-deg\n");
-						Longitude = Double.Parse(telnetClient.read());
-
-						telnetClient.write("get /position/latitude-deg\n");
-						Latitude = Double.Parse(telnetClient.read());
 					} catch
 					{
-						continue;
+						messageString = "Could not get HeadingDeg value";
+						// read for "ERR"
+						telnetClient.read();
 					}
-					
+
+					try
+					{
+						telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");
+						VerticalSpeed = Double.Parse(telnetClient.read());
+					} catch
+					{
+						messageString = "Could not get VerticalSpeed value";
+						telnetClient.read();
+					}
+
+					try
+					{
+						telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");
+						GroundSpeed = Double.Parse(telnetClient.read());
+					} catch
+					{
+						messageString = "Could not get GroundSpeed value";
+						telnetClient.read();
+					}
+
+					try
+					{
+						telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
+						AirSpeed = Double.Parse(telnetClient.read());
+					} catch
+					{
+						messageString = "Could not get IndicatedSpeed value";
+						telnetClient.read();
+					}
+
+					try
+					{
+						telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");
+						Altitude = Double.Parse(telnetClient.read());
+					} catch
+					{
+						messageString = "Could not get IndicatedAltitude value";
+						telnetClient.read();
+					}
+
+					try
+					{
+						telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
+						InternalRollDeg = Double.Parse(telnetClient.read());
+					} catch
+					{
+						messageString = "Could not get InternalRollDeg value";
+						telnetClient.read();
+					}
+
+					try
+					{
+						telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
+						InternalPitchDeg = Double.Parse(telnetClient.read());
+					} catch
+					{
+						messageString = "Could not get InternalPitchDeg value";
+						telnetClient.read();
+					}
+
+					try
+					{
+						telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");
+						GpsAltitude = Double.Parse(telnetClient.read());
+					} catch
+					{
+						messageString = "Could not get IdicatedAltitude value";
+						telnetClient.read();
+					}
+
+					try
+					{
+						telnetClient.write("get /position/longitude-deg\n");
+						double returnVal = Double.Parse(telnetClient.read());
+						// check correctness of returned value
+						returnVal = 190;
+						if (returnVal > -180 && returnVal < 180)
+						{
+							Longitude = returnVal;
+						}
+						else
+						{
+							messageString = "LONGITUDE not in range";
+						}
+					} catch
+					{
+						messageString = "Could not get LongitudeDeg value";
+						telnetClient.read();
+					}
+
+					try
+					{
+						telnetClient.write("get /position/latitude-deg\n");
+						double returnVal = Double.Parse(telnetClient.read());
+						// check correctness of returned value
+						if (returnVal > -90 && returnVal < 90)
+						{
+							Latitude = returnVal;
+						}
+						else
+						{
+							messageString = "LATITUDE not in range";
+						}
+					} catch
+					{
+						messageString = "Could not get LatitudeDeg value";
+						telnetClient.read();
+					}
+
 					Thread.Sleep(250);
 				}
 			}).Start();
@@ -121,44 +222,18 @@ namespace FlightSimulator
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propName));
 			}
-				
+
 		}
 
-		/*public void update(string prop, double e)
+		public string MessageString
 		{
-			new Thread(delegate ()
+			get { return messageString; }
+			set
 			{
-				switch (prop)
-				{
-					case "Ailrone":
-						this.telnetClient.write("set /controls/flight/aileron " + e + "\n");
-						break;
-					case "Throttle":
-						this.telnetClient.write("set /controls/engines/current-engine/throttle " + e + "\n");
-						break;
-				}
-			}).Start();
-			
-		}*/
-
-		private double headingDeg;
-		private double verticalSpeed;
-		private double groundSpeed;
-		private double airSpeed;
-		private double altitude;
-		private double internalRollDeg;
-		private double internalPitchDeg;
-		private double gpsAltitude;
-
-		private double latitude;
-		private double longitude;
-		private Location location;
-
-		private double throttle;
-		private double aileron;
-
-		private double elevator;
-		private double rudder;
+				messageString = value;
+				NotifyPropertyChanged("MessageString");
+			}
+		}
 
 		public double HeadingDeg
 		{

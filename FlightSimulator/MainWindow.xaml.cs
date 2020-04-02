@@ -35,8 +35,8 @@ namespace FlightSimulator
             joystick1.DataContext = j_vm;
 
             DataContext = vm;
-            /*vm.model.connect("127.0.0.1", 5402);
-            vm.model.start();*/
+            vm.model.connect("127.0.0.1", 5401);
+            vm.model.start();
         }
 
         private void Slider_ValueChanged_Aileron(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -47,6 +47,11 @@ namespace FlightSimulator
         private void Slider_ValueChanged_Throttle(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             this.j_vm.updateThrottle(e.NewValue);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            logBox.Clear();
         }
     }
 }

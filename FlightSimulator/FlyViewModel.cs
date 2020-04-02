@@ -30,6 +30,12 @@ namespace FlightSimulator
 		}
 
 		// Properties
+		public string VM_MessageString
+		{
+			get { return this.model.MessageString; }
+		}
+
+
 		public double VM_HeadingDeg
 		{
 			get { return this.model.HeadingDeg; }
