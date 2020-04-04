@@ -77,12 +77,27 @@ namespace FlightSimulator
 		}
 		public void connect(string ip, int port)
 		{
-			telnetClient.connect(ip, port);
+			for (int i = 0; i < 5; i++)
+			{
+				try
+				{
+					this.stop = false;
+					telnetClient.connect(ip, port);
+					break;
+				}
+				catch
+				{
+					MessageString = "Connection problem. Please try again!";
+				}
+			}
+			
+			
 		}
 		public void disconnect()
 		{
 			this.stop = true;
 			telnetClient.disconnect();
+			telnetClient = new MyTelnetClient();
 		}
 
 		public void start()
@@ -177,7 +192,7 @@ namespace FlightSimulator
 						telnetClient.write("get /position/longitude-deg\n");
 						double returnVal = Double.Parse(telnetClient.read());
 						// check correctness of returned value
-						returnVal = 190;
+						//returnVal = 190;
 						if (returnVal > -180 && returnVal < 180)
 						{
 							Longitude = returnVal;

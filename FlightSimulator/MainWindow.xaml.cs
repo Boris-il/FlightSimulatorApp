@@ -35,8 +35,8 @@ namespace FlightSimulator
             joystick1.DataContext = j_vm;
 
             DataContext = vm;
-            vm.model.connect("127.0.0.1", 5401);
-            vm.model.start();
+            //vm.model.connect("127.0.0.1", 5401);
+           // vm.model.start();
         }
 
         private void Slider_ValueChanged_Aileron(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -52,6 +52,42 @@ namespace FlightSimulator
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             logBox.Clear();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            ConnectionWindow conWin = new ConnectionWindow();
+            conWin.ShowDialog();
+            try
+            {
+                int p = int.Parse(conWin.getPort());
+
+                if (p>65535 || p<0)
+                {
+                    logBox.Text = "Please check your port number {1:65535}";
+                }
+                else
+                {
+                    vm.model.connect(conWin.getIpAddress(), p);
+                    vm.model.start();
+                }
+                
+            }
+            catch
+            {
+                if (conWin.conClicked)
+                {
+                    logBox.Text = "Please check your port number {1:65535}";
+                }
+                
+            }
+            
+            
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            vm.model.disconnect();
         }
     }
 }

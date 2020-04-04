@@ -24,18 +24,18 @@ namespace FlightSimulator
 
         public void connect(string ip, int port)
         {
-            try
-            {
+            //try
+            //{
                 this.tcp_client = new TcpClient(ip, port);
                 Console.WriteLine("Establishing Connection");
                // this.tcp_client.Connect(ip, port);
                 Console.WriteLine("Connected");
                 this.stream = tcp_client.GetStream();
-            }
-            catch
+            //}
+            /*catch
             {
                 Console.WriteLine("Connection Error");
-            }
+            }*/
         }
 
         public void disconnect()
