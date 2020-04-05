@@ -77,12 +77,27 @@ namespace FlightSimulator
 		}
 		public void connect(string ip, int port)
 		{
-			telnetClient.connect(ip, port);
+			for (int i = 0; i < 5; i++)
+			{
+				try
+				{
+					this.stop = false;
+					telnetClient.connect(ip, port);
+					break;
+				}
+				catch
+				{
+					MessageString = "Connection problem. Please try again!";
+				}
+			}
+			
+			
 		}
 		public void disconnect()
 		{
 			this.stop = true;
 			telnetClient.disconnect();
+			telnetClient = new MyTelnetClient();
 		}
 
 		public void start()

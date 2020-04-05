@@ -24,19 +24,19 @@ namespace FlightSimulator
 
         public void connect(string ip, int port)
         {
-            try
-            {
+            //try
+            //{
                 this.tcp_client = new TcpClient(ip, port);
                // set recieve timeout 10 seconds
                 tcp_client.ReceiveTimeout = 5000;
                 Console.WriteLine("Establishing Connection");
                 Console.WriteLine("Server Connected");
                 this.stream = tcp_client.GetStream();
-            }
-            catch
+            //}
+            /*catch
             {
                 Console.WriteLine("Connection Error");
-            }
+            }*/
         }
 
         public void disconnect()
