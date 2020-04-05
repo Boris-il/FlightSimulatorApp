@@ -95,18 +95,31 @@ namespace FlightSimulator
 					{
 						telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
 						HeadingDeg = Double.Parse(telnetClient.read());
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get HeadingDeg value";
-						// read for "ERR"
 						telnetClient.read();
 					}
-
+					
 					try
 					{
 						telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");
 						VerticalSpeed = Double.Parse(telnetClient.read());
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get VerticalSpeed value";
 						telnetClient.read();
@@ -116,7 +129,14 @@ namespace FlightSimulator
 					{
 						telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");
 						GroundSpeed = Double.Parse(telnetClient.read());
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get GroundSpeed value";
 						telnetClient.read();
@@ -126,7 +146,14 @@ namespace FlightSimulator
 					{
 						telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
 						AirSpeed = Double.Parse(telnetClient.read());
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get IndicatedSpeed value";
 						telnetClient.read();
@@ -136,7 +163,14 @@ namespace FlightSimulator
 					{
 						telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");
 						Altitude = Double.Parse(telnetClient.read());
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get IndicatedAltitude value";
 						telnetClient.read();
@@ -146,7 +180,14 @@ namespace FlightSimulator
 					{
 						telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
 						InternalRollDeg = Double.Parse(telnetClient.read());
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get InternalRollDeg value";
 						telnetClient.read();
@@ -156,7 +197,14 @@ namespace FlightSimulator
 					{
 						telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
 						InternalPitchDeg = Double.Parse(telnetClient.read());
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get InternalPitchDeg value";
 						telnetClient.read();
@@ -166,7 +214,14 @@ namespace FlightSimulator
 					{
 						telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");
 						GpsAltitude = Double.Parse(telnetClient.read());
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get IdicatedAltitude value";
 						telnetClient.read();
@@ -177,7 +232,7 @@ namespace FlightSimulator
 						telnetClient.write("get /position/longitude-deg\n");
 						double returnVal = Double.Parse(telnetClient.read());
 						// check correctness of returned value
-						returnVal = 190;
+						//returnVal = 190;
 						if (returnVal > -180 && returnVal < 180)
 						{
 							Longitude = returnVal;
@@ -186,7 +241,14 @@ namespace FlightSimulator
 						{
 							messageString = "LONGITUDE not in range";
 						}
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get LongitudeDeg value";
 						telnetClient.read();
@@ -205,7 +267,14 @@ namespace FlightSimulator
 						{
 							messageString = "LATITUDE not in range";
 						}
-					} catch
+					}
+					catch (System.IO.IOException e)
+					{
+						messageString += e;
+						disconnect();
+						break;
+					}
+					catch
 					{
 						messageString = "Could not get LatitudeDeg value";
 						telnetClient.read();

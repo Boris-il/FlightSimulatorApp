@@ -33,7 +33,6 @@ namespace FlightSimulator
             vm = new FlyViewModel(model);
             j_vm = new JoystickViewModel(model);
             joystick1.DataContext = j_vm;
-
             DataContext = vm;
             vm.model.connect("127.0.0.1", 5401);
             vm.model.start();
