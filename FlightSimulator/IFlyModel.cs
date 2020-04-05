@@ -90,8 +90,8 @@ namespace FlightSimulator
 					MessageString = "Connection problem. Please try again!";
 				}
 			}
-			
-			
+
+
 		}
 		public void disconnect()
 		{
