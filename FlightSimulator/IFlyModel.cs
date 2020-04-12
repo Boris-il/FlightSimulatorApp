@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.Maps.MapControl.WPF;
 
 namespace FlightSimulator
@@ -35,6 +36,8 @@ namespace FlightSimulator
 		double Aileron { set; get; }
 
 		string MessageString { get; set; }
+
+		bool Stop { get; set; }
 
 
 
@@ -73,7 +76,7 @@ namespace FlightSimulator
 		public MyFlyModel(IClient client)
 		{
 			this.telnetClient = client;
-			this.stop = false;
+			Stop = true;
 		}
 		public void connect(string ip, int port)
 		{
@@ -81,7 +84,7 @@ namespace FlightSimulator
 			{
 				try
 				{
-					this.stop = false;
+					Stop = false;
 					telnetClient.connect(ip, port);
 					break;
 				}
@@ -100,7 +103,7 @@ namespace FlightSimulator
 			telnetClient = new MyTelnetClient();
 		}
 
-		public void start()
+		public async void start()
 		{
 			new Thread(delegate ()
 			{
@@ -432,12 +435,30 @@ namespace FlightSimulator
 			}
 			set
 			{
-				throttle = value;
-				this.telnetClient.write("set /controls/engines/current-engine/throttle " + Throttle + "\n");
-				this.telnetClient.read();
+				try
+				{
+					throttle = value;
+					updateThrottle();
+					
+				}
+				catch
+				{
+					MessageString = "Throttle update issue";
+				}
+				
 
 			}
 
+		}
+
+		public async void updateThrottle()
+		{
+			await Task.Run(() =>
+			{
+				this.telnetClient.write("set /controls/engines/current-engine/throttle " + Throttle + "\n");
+				this.telnetClient.read();
+			});
+			
 		}
 		public double Aileron
 		{
@@ -447,9 +468,18 @@ namespace FlightSimulator
 			}
 			set
 			{
-				aileron = value;
-				this.telnetClient.write("set /controls/flight/aileron " + Aileron + "\n");
-				this.telnetClient.read();
+				try
+				{
+					
+					aileron = value;
+					this.telnetClient.write("set /controls/flight/aileron " + Aileron + "\n");
+					this.telnetClient.read();
+				}
+				catch
+				{
+					MessageString = "Aileron update issue";
+				}
+				
 			}
 		}
 
@@ -478,6 +508,16 @@ namespace FlightSimulator
 				rudder = value;
 				this.telnetClient.write("set /controls/flight/rudder " + Rudder + "\n");
 				this.telnetClient.read();
+			}
+		}
+
+		public bool Stop
+		{
+			get { return stop; }
+			set
+			{
+				stop = value;
+				NotifyPropertyChanged("Stop");
 			}
 		}
 	}

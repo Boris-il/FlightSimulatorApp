@@ -7,14 +7,42 @@
         xmlns:local="clr-namespace:FlightSimulator"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="600" Width="800">
+        Title="MainWindow" Height="600" Width="800" Background="SkyBlue">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <Button Margin="0,0,286,504" TextBlock.FontSize="16" TextBlock.FontWeight="Bold"  Background="LimeGreen" Click="Button_Click_1">Connect</Button>
-        <Button Margin="0,47,286,457" TextBlock.FontSize="16" TextBlock.FontWeight="Bold"  Background="Red" Click="Button_Click_2">Disconnect</Button>
+        <Button Margin="0,0,286,504" TextBlock.FontSize="16" TextBlock.FontWeight="Bold"  Background="LimeGreen" Click="Button_Click_1" Content="Connect">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="IsEnabled" Value="True"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding VM_Stop}" Value="True">
+                            <Setter Property="IsEnabled" Value="True" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding VM_Stop}" Value="False">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Margin="0,47,286,457" TextBlock.FontSize="16" TextBlock.FontWeight="Bold"  Background="Red" Click="Button_Click_2" Content="Disconnect">
+            <Button.Style>
+                <Style TargetType="Button">
+                    <Setter Property="IsEnabled" Value="False"/>
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding VM_Stop}" Value="False">
+                            <Setter Property="IsEnabled" Value="True" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding VM_Stop}" Value="True">
+                            <Setter Property="IsEnabled" Value="False" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
         <TextBox x:Name="logBox" Margin="119,32,10,457" Text="{Binding VM_MessageString, Mode=OneWay}"></TextBox>
         <Button  Margin="313,1,10,522" TextBlock.FontSize="11" Click="Button_Click" Content="Clear Logs"/>
 

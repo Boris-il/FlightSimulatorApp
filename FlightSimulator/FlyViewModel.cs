@@ -132,6 +132,14 @@ namespace FlightSimulator
 			{ return this.model.Location; }
 		}
 
+		public bool VM_Stop
+		{
+			get
+			{
+				return this.model.Stop;
+			}
+		}
+
 
 
 	}
