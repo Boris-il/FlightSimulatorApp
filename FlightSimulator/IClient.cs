@@ -24,26 +24,27 @@ namespace FlightSimulator
 
         public void connect(string ip, int port)
         {
-            try
-            {
-                this.tcp_client = new TcpClient(ip, port);
-               // set recieve timeout
-                tcp_client.ReceiveTimeout = 5000;
-                Console.WriteLine("Establishing Connection");
-                Console.WriteLine("Server Connected");
-                this.stream = tcp_client.GetStream();
-            }
-            catch
-            {
-                Console.WriteLine("Connection Error");
-            }
+            
+            this.tcp_client = new TcpClient(ip, port);
+            // set recieve timeout
+            tcp_client.ReceiveTimeout = 10000;
+            Console.WriteLine("Establishing Connection");
+            Console.WriteLine("Server Connected");
+            this.stream = tcp_client.GetStream();
         }
 
         public void disconnect()
         {
-            this.stream.Close();
-            this.tcp_client.Close();
+            if (stream != null)
+            {
+                this.stream.Close();
+            }
+            if (tcp_client != null)
+            {
+                this.tcp_client.Close();
+            }
             Console.WriteLine("Server Disconnected");
+
         }
 
         public string read()
@@ -57,6 +58,9 @@ namespace FlightSimulator
             responseData = Encoding.ASCII.GetString(inData, 0, bytes);
             //Console.WriteLine("Received: {0}", responseData);
             return responseData;
+            
+
+            
         }
 
         public void write(string command)

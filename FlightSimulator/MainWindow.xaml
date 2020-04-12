@@ -47,8 +47,9 @@
         <Button  Margin="313,1,10,522" TextBlock.FontSize="11" Click="Button_Click" Content="Clear Logs"/>
 
         <Label Margin="115,0,185,504" TextBlock.FontWeight="Bold" VerticalAlignment="Center" Height="45">Flight Log:</Label>
-        <m:Map CredentialsProvider="Ajvg4QXjjgVzJ0vo51FH6izLF8haGAv0emj1CG3f2YkBr0qk3Z-9FzooB1cPPvJ4" BorderBrush="black" BorderThickness="2" Margin="0,97,0,15">
-            <m:Pushpin  Location="{Binding VM_Location}"></m:Pushpin>
+        <m:Map x:Name="map" CredentialsProvider="Ajvg4QXjjgVzJ0vo51FH6izLF8haGAv0emj1CG3f2YkBr0qk3Z-9FzooB1cPPvJ4" BorderBrush="black" BorderThickness="2" Margin="0,97,0,15">
+            <m:Pushpin Location="{Binding VM_Location}">
+            </m:Pushpin>
         </m:Map>
 
         <Border Background="Gray"  Grid.Column="1" CornerRadius="10" BorderBrush="black" BorderThickness="7" Margin="10">
@@ -94,10 +95,10 @@
                                 <Viewbox Height="150" Width="150" Margin="60,0,0,0">
                                     <local:Joystick x:Name="joystick1"></local:Joystick>
                                 </Viewbox>
-                                <Slider ValueChanged="Slider_ValueChanged_Aileron" Orientation="Horizontal" Margin="10,116,190,-116" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1" Height="130" VerticalAlignment="Top"/>
-                                <Slider ValueChanged="Slider_ValueChanged_Throttle" Orientation="Vertical" Height="130" Margin="264,8,6,-8" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.1"/>
+                                <Slider Interval="1500" ValueChanged="Slider_ValueChanged_Aileron" Orientation="Horizontal" Margin="10,116,190,-116" TickPlacement="BottomRight" Foreground="Blue" Minimum="-1" Maximum="1" TickFrequency="0.2" Height="130" VerticalAlignment="Top"/>
+                                <Slider Interval="1500" ValueChanged="Slider_ValueChanged_Throttle" Orientation="Vertical" Margin="264,5,6,13" TickPlacement="BottomRight" Foreground="Blue" Minimum="0" Maximum="1" TickFrequency="0.1"/>
                                 <Label Content="Aileron" Margin="40,140,210,-36" HorizontalAlignment="Center" Width="54"/>
-                                <Label Content="Throttle" Margin="254,140,-8,-36" HorizontalAlignment="Center" Width="58"/>
+                                <Label Content="Throttle" Margin="248,141,-2,-15" HorizontalAlignment="Center" Width="58"/>
 
                             </Grid>
 
