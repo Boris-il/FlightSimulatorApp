@@ -103,7 +103,7 @@ namespace FlightSimulator
 			telnetClient = new MyTelnetClient();
 		}
 
-		public async void start()
+		public void start()
 		{
 			new Thread(delegate ()
 			{

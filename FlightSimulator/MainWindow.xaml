@@ -48,7 +48,7 @@
 
         <Label Margin="115,0,185,504" TextBlock.FontWeight="Bold" VerticalAlignment="Center" Height="45">Flight Log:</Label>
         <m:Map CredentialsProvider="Ajvg4QXjjgVzJ0vo51FH6izLF8haGAv0emj1CG3f2YkBr0qk3Z-9FzooB1cPPvJ4" BorderBrush="black" BorderThickness="2" Margin="0,97,0,15">
-            <m:Pushpin  Location="{Binding VM_Location}"></m:Pushpin>
+            <m:Pushpin Location="{Binding VM_Location}"></m:Pushpin>
         </m:Map>
 
         <Border Background="Gray"  Grid.Column="1" CornerRadius="10" BorderBrush="black" BorderThickness="7" Margin="10">
