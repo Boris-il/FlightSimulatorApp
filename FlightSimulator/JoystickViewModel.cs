@@ -59,14 +59,14 @@ namespace FlightSimulator
 		{
 			set
 			{
-				model.Rudder = (value / 85);
+				model.Rudder = Math.Round((value / 85), 2);
 			}
 		}
 		public double VM_PointY
 		{
 			set
 			{
-				model.Elevator = (value / (-85));
+				model.Elevator = Math.Round((value / (-85)), 2);
 			}
 		}
 

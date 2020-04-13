@@ -34,25 +34,23 @@ namespace FlightSimulator
             vm = new FlyViewModel(model);
             j_vm = new JoystickViewModel(model);
             joystick1.DataContext = j_vm;
+            aileronSlider.DataContext = j_vm;
+            ThrottleSlider.DataContext = j_vm;
             DataContext = vm;
            // vm.model.connect("127.0.0.1", 5401);
            // vm.model.start();
         }
 
-        private void Slider_ValueChanged_Aileron(object sender, RoutedPropertyChangedEventArgs<double> e)
+        /*private void Slider_ValueChanged_Aileron(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            bool mouseIsDown = (System.Windows.Input.Mouse.LeftButton == MouseButtonState.Pressed);
-            Console.WriteLine(mouseIsDown);
-            if (!mouseIsDown)
+            double newValue = Math.Round(e.NewValue, 1);
+            if (Math.Abs(newValue - aileronLastValue) > 0.09)
             {
-                double newValue = Math.Round(e.NewValue, 1);
-                if (Math.Abs(newValue - aileronLastValue) > 0.09)
-                {
-                    Console.WriteLine("AILERON: new value: {0}\nlast value: {1}", newValue, aileronLastValue);
-                    aileronLastValue = newValue;
-                    this.j_vm.updateAileron(newValue);
-                }
+                Console.WriteLine("AILERON: new value: {0}\nlast value: {1}", newValue, aileronLastValue);
+                aileronLastValue = newValue;
+                this.j_vm.updateAileron(newValue);
             }
+            
             
             
         }
@@ -67,7 +65,7 @@ namespace FlightSimulator
                 this.j_vm.updateThrottle(newValue);
             }
             
-        }
+        }*/
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
