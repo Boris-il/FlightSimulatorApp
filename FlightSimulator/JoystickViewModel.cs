@@ -10,7 +10,6 @@ namespace FlightSimulator
 {
     class JoystickViewModel : INotifyPropertyChanged
 	{
-
         public IFlyModel model;
 
 		// constructor
@@ -59,6 +58,7 @@ namespace FlightSimulator
 		{
 			set
 			{
+				//Console.WriteLine("last X was: {0}\nnew X is: {1}", model.Rudder, value) ;
 				model.Rudder = Math.Round((value / 85), 2);
 			}
 		}
@@ -66,6 +66,7 @@ namespace FlightSimulator
 		{
 			set
 			{
+				//Console.WriteLine("Y updated");	
 				model.Elevator = Math.Round((value / (-85)), 2);
 			}
 		}

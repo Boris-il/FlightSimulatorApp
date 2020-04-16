@@ -12,7 +12,7 @@ namespace FlightSimulator
     {
         public Joystick()
         {
-            
+           
             InitializeComponent();
         }
 
@@ -56,8 +56,10 @@ namespace FlightSimulator
                 this.current.Y = e.GetPosition(this).Y - this.start.Y;
 
                 // limit the movement of the knob
-                if ((d = Math.Sqrt(this.current.X * this.current.X + this.current.Y * this.current.Y)) < (BlackBase.Width / 2))
+                d = Math.Sqrt(this.current.X * this.current.X + this.current.Y * this.current.Y);
+                if (d < (BlackBase.Width / 2))
                 {
+                    Console.WriteLine("position changed");
                     knobPosition.X = this.current.X;
                     knobPosition.Y = this.current.Y;
                 }

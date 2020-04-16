@@ -13,7 +13,7 @@ namespace FlightSimulator
 		// connection to the simulator
 		void connect(string ip, int port);
 		void disconnect();
-		void start();
+		Task start();
 		//void update(string prop, double e);
 
 		// Dashboard properties
@@ -38,14 +38,11 @@ namespace FlightSimulator
 		string MessageString { get; set; }
 
 		bool Stop { get; set; }
-
-
-
-
 	}
 
 	class MyFlyModel : IFlyModel
 	{
+		private static readonly Object obj = new Object();
 		public event PropertyChangedEventHandler PropertyChanged;
 
 		IClient telnetClient;
@@ -70,6 +67,8 @@ namespace FlightSimulator
 		private double aileron;
 		private double elevator;
 		private double rudder;
+		private double lastElevator=0;
+		private double lastRudder=0;
 
 		private string messageString;
 
@@ -82,226 +81,250 @@ namespace FlightSimulator
 		{
 			for (int i = 0; i < 5; i++)
 			{
-				//try
-				//{
-					
+				try
+				{
 					telnetClient.connect(ip, port);
 					Stop = false;
 					break;
-				//}
-				//catch
-				//{
-				//	MessageString = "Connection problem. Please try again!";
-				//}
+				}
+				catch
+				{
+					MessageString = "Connection problem. Please try again!";
+				}
 			}
 
 
 		}
 		public void disconnect()
 		{
+			//Console.WriteLine("disconnected by error");
 			Stop = true;
 			telnetClient.disconnect();
 			telnetClient = new MyTelnetClient();
 		}
 
-		public void start()
+		public async Task start()
 		{
 			new Thread(delegate ()
 			{
 				while (!Stop)
 				{
-					try
+					lock (obj)
 					{
-						telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
-						HeadingDeg = Double.Parse(telnetClient.read());
-					}
-					catch (System.IO.IOException e)
-					{
-						MessageString = e.Message;
-						disconnect();
-						break;
-					}
-					catch
-					{
-						MessageString = "Could not get HeadingDeg value";
-						telnetClient.read();
-					}
-					
-					try
-					{
-						telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");
-						VerticalSpeed = Double.Parse(telnetClient.read());
-					}
-					catch (System.IO.IOException e)
-					{
-						MessageString = e.Message;
-						disconnect();
-						break;
-					}
-					catch
-					{
-						MessageString = "Could not get VerticalSpeed value";
-						telnetClient.read();
-					}
-
-					try
-					{
-						telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");
-						GroundSpeed = Double.Parse(telnetClient.read());
-					}
-					catch (System.IO.IOException e)
-					{
-						MessageString = e.Message;
-						disconnect();
-						break;
-					}
-					catch
-					{
-						MessageString = "Could not get GroundSpeed value";
-						telnetClient.read();
-					}
-
-					try
-					{
-						telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
-						AirSpeed = Double.Parse(telnetClient.read());
-					}
-					catch (System.IO.IOException e)
-					{
-						MessageString = e.Message;
-						disconnect();
-						break;
-					}
-					catch
-					{
-						MessageString = "Could not get IndicatedSpeed value";
-						telnetClient.read();
-					}
-
-					try
-					{
-						telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");
-						Altitude = Double.Parse(telnetClient.read());
-					}
-					catch (System.IO.IOException e)
-					{
-						MessageString = e.Message;
-						disconnect();
-						break;
-					}
-					catch
-					{
-						MessageString = "Could not get IndicatedAltitude value";
-						telnetClient.read();
-					}
-
-					try
-					{
-						telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
-						InternalRollDeg = Double.Parse(telnetClient.read());
-					}
-					catch (System.IO.IOException e)
-					{
-						MessageString = e.Message;
-						disconnect();
-						break;
-					}
-					catch
-					{
-						MessageString = "Could not get InternalRollDeg value";
-						telnetClient.read();
-					}
-
-					try
-					{
-						telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
-						InternalPitchDeg = Double.Parse(telnetClient.read());
-					}
-					catch (System.IO.IOException e)
-					{
-						MessageString = e.Message;
-						disconnect();
-						break;
-					}
-					catch
-					{
-						MessageString = "Could not get InternalPitchDeg value";
-						telnetClient.read();
-					}
-
-					try
-					{
-						telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");
-						GpsAltitude = Double.Parse(telnetClient.read());
-					}
-					catch (System.IO.IOException e)
-					{
-						MessageString = e.Message;
-						disconnect();
-						break;
-					}
-					catch
-					{
-						MessageString = "Could not get IdicatedAltitude value";
-						telnetClient.read();
-					}
-
-					try
-					{
-						telnetClient.write("get /position/longitude-deg\n");
-						double returnVal = Double.Parse(telnetClient.read());
-						// check correctness of returned value
-						//returnVal = 190;
-						if (returnVal > -180 && returnVal < 180)
+						try
 						{
-							Longitude = returnVal;
+							telnetClient.write("get /instrumentation/heading-indicator/indicated-heading-deg\n");
+							HeadingDeg = Double.Parse(telnetClient.read());
 						}
-						else
+
+
+						catch (System.IO.IOException e)
 						{
-							messageString = "LONGITUDE not in range";
+							MessageString = e.Message;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							MessageString = "Could not get HeadingDeg value";
+							telnetClient.read();
 						}
 					}
-					catch (System.IO.IOException e)
+					lock (obj)
 					{
-						messageString += e;
-						disconnect();
-						break;
-					}
-					catch
-					{
-						messageString = "Could not get LongitudeDeg value";
-						telnetClient.read();
-					}
-
-					try
-					{
-						telnetClient.write("get /position/latitude-deg\n");
-						double returnVal = Double.Parse(telnetClient.read());
-						// check correctness of returned value
-						if (returnVal > -90 && returnVal < 90)
+						try
 						{
-							Latitude = returnVal;
+							telnetClient.write("get /instrumentation/gps/indicated-vertical-speed\n");
+							VerticalSpeed = Double.Parse(telnetClient.read());
 						}
-						else
+						catch (System.IO.IOException e)
 						{
-							messageString = "LATITUDE not in range";
+							MessageString = e.Message;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							MessageString = "Could not get VerticalSpeed value";
+							telnetClient.read();
 						}
 					}
-					catch (System.IO.IOException e)
+					lock (obj)
 					{
-						messageString += e;
-						disconnect();
-						break;
+						try
+						{
+							telnetClient.write("get /instrumentation/gps/indicated-ground-speed-kt\n");
+							GroundSpeed = Double.Parse(telnetClient.read());
+						}
+						catch (System.IO.IOException e)
+						{
+							MessageString = e.Message;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							MessageString = "Could not get GroundSpeed value";
+							telnetClient.read();
+						}
 					}
-					catch
+					lock (obj)
 					{
-						messageString = "Could not get LatitudeDeg value";
-						telnetClient.read();
-					}
 
-					Thread.Sleep(250);
+						try
+						{
+							telnetClient.write("get /instrumentation/airspeed-indicator/indicated-speed-kt\n");
+							AirSpeed = Double.Parse(telnetClient.read());
+						}
+						catch (System.IO.IOException e)
+						{
+							MessageString = e.Message;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							MessageString = "Could not get IndicatedSpeed value";
+							telnetClient.read();
+						}
+					}
+					lock (obj)
+					{
+
+						try
+						{
+							telnetClient.write("get /instrumentation/gps/indicated-altitude-ft\n");
+							Altitude = Double.Parse(telnetClient.read());
+						}
+						catch (System.IO.IOException e)
+						{
+							MessageString = e.Message;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							MessageString = "Could not get IndicatedAltitude value";
+							telnetClient.read();
+						}
+					}
+					lock (obj)
+					{
+						try
+						{
+							telnetClient.write("get /instrumentation/attitude-indicator/internal-roll-deg\n");
+							InternalRollDeg = Double.Parse(telnetClient.read());
+						}
+						catch (System.IO.IOException e)
+						{
+							MessageString = e.Message;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							MessageString = "Could not get InternalRollDeg value";
+							telnetClient.read();
+						}
+					}
+					lock (obj)
+					{
+						try
+						{
+							telnetClient.write("get /instrumentation/attitude-indicator/internal-pitch-deg\n");
+							InternalPitchDeg = Double.Parse(telnetClient.read());
+						}
+						catch (System.IO.IOException e)
+						{
+							MessageString = e.Message;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							MessageString = "Could not get InternalPitchDeg value";
+							telnetClient.read();
+						}
+					}
+					lock (obj)
+					{
+						try
+						{
+							telnetClient.write("get /instrumentation/altimeter/indicated-altitude-ft\n");
+							GpsAltitude = Double.Parse(telnetClient.read());
+						}
+						catch (System.IO.IOException e)
+						{
+							MessageString = e.Message;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							MessageString = "Could not get IdicatedAltitude value";
+							telnetClient.read();
+						}
+					}
+					lock (obj)
+					{
+						try
+						{
+							telnetClient.write("get /position/longitude-deg\n");
+							double returnVal = Double.Parse(telnetClient.read());
+							// check correctness of returned value
+							//returnVal = 190;
+							if (returnVal > -180 && returnVal < 180)
+							{
+								Longitude = returnVal;
+							}
+							else
+							{
+								messageString = "LONGITUDE not in range";
+							}
+						}
+						catch (System.IO.IOException e)
+						{
+							messageString += e;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							messageString = "Could not get LongitudeDeg value";
+							telnetClient.read();
+						}
+
+						try
+						{
+							telnetClient.write("get /position/latitude-deg\n");
+							double returnVal = Double.Parse(telnetClient.read());
+							// check correctness of returned value
+							if (returnVal > -90 && returnVal < 90)
+							{
+								Latitude = returnVal;
+							}
+							else
+							{
+								messageString = "LATITUDE not in range";
+							}
+						}
+						catch (System.IO.IOException e)
+						{
+							messageString += e;
+							disconnect();
+							break;
+						}
+						catch
+						{
+							messageString = "Could not get LatitudeDeg value";
+							telnetClient.read();
+						}
+					}
+						Thread.Sleep(250);
+						
 				}
 			}).Start();
+			await Task.Delay(2000);
 		}
 
 		public void NotifyPropertyChanged(string propName)
@@ -458,8 +481,12 @@ namespace FlightSimulator
 			{
 				try
 				{
-					this.telnetClient.write("set /controls/engines/current-engine/throttle " + throttle + "\n");
-					this.telnetClient.read();
+					lock (obj)
+					{
+						this.telnetClient.write("set /controls/engines/current-engine/throttle " + throttle + "\n");
+						this.telnetClient.read();
+					}
+						
 				}
 				catch
 				{
@@ -514,8 +541,12 @@ namespace FlightSimulator
 			{
 				try
 				{
-					this.telnetClient.write("set /controls/flight/aileron " + aileron + "\n");
-					this.telnetClient.read();
+					lock (obj)
+					{
+						this.telnetClient.write("set /controls/flight/aileron " + aileron + "\n");
+						this.telnetClient.read();
+					}
+						
 				}
 				catch
 				{
@@ -545,8 +576,7 @@ namespace FlightSimulator
 				try
 				{
 					elevator = value;
-					updateElevator();
-					
+					updateElevator();	
 				}
 				catch
 				{
@@ -568,8 +598,25 @@ namespace FlightSimulator
 		{
 			await Task.Run(() =>
 			{
-				this.telnetClient.write("set /controls/flight/elevator " + Elevator + "\n");
-				this.telnetClient.read();
+				lock (obj)
+				{
+					if (Elevator != lastElevator)
+					{
+						
+						this.telnetClient.write("set /controls/flight/elevator " + Elevator + "\n");
+						this.telnetClient.read();
+						//Task.Delay(250);
+						Console.WriteLine("sent elevator: {0}", Elevator);
+						lastElevator = Elevator;
+
+					}
+					//else
+					//{
+					//Console.WriteLine(lastElevator);
+					//}
+
+				}
+				
 			});
 			
 		}
@@ -605,8 +652,19 @@ namespace FlightSimulator
 		{
 			await Task.Run(() =>
 			{
-				this.telnetClient.write("set /controls/flight/rudder " + Rudder + "\n");
-				this.telnetClient.read();
+				lock (obj)
+				{
+					if (Rudder != lastRudder)
+					{
+					this.telnetClient.write("set /controls/flight/rudder " + Rudder + "\n");
+					this.telnetClient.read();
+					//Task.Delay(250);
+					lastRudder = Rudder;
+					}
+					
+					//Console.WriteLine("rudder = {0}", rudder);
+				}
+					
 			});
 			
 		}
