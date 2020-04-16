@@ -28,6 +28,7 @@ namespace FlightSimulator
             this.tcp_client = new TcpClient(ip, port);
             // set recieve timeout
             tcp_client.ReceiveTimeout = 10000;
+            tcp_client.SendTimeout = 10000;
             Console.WriteLine("Establishing Connection");
             Console.WriteLine("Server Connected");
             this.stream = tcp_client.GetStream();
@@ -69,10 +70,14 @@ namespace FlightSimulator
             // Translate the passed message into ASCII and store it as a Byte array
             byte[] outData = new byte[1024];
             outData = Encoding.ASCII.GetBytes(command);
-            // Send the message to the connected TcpServer. 
-            this.stream.Write(outData, 0, outData.Length);
+            // Send the message to the connected TcpServer.
+            //if (stream != null)
+            //{
+                this.stream.Write(outData, 0, outData.Length);
+           // }
+            
 
-            //Console.WriteLine("Sent: {0}", outData);
+            Console.WriteLine("Sent: {0}", command);
         }
     }
 }
