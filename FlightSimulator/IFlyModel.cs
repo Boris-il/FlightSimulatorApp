@@ -82,23 +82,24 @@ namespace FlightSimulator
 		{
 			for (int i = 0; i < 5; i++)
 			{
-				try
-				{
-					Stop = false;
+				//try
+				//{
+					
 					telnetClient.connect(ip, port);
+					Stop = false;
 					break;
-				}
-				catch
-				{
-					MessageString = "Connection problem. Please try again!";
-				}
+				//}
+				//catch
+				//{
+				//	MessageString = "Connection problem. Please try again!";
+				//}
 			}
 
 
 		}
 		public void disconnect()
 		{
-			this.stop = true;
+			Stop = true;
 			telnetClient.disconnect();
 			telnetClient = new MyTelnetClient();
 		}
@@ -107,7 +108,7 @@ namespace FlightSimulator
 		{
 			new Thread(delegate ()
 			{
-				while (!stop)
+				while (!Stop)
 				{
 					try
 					{
@@ -116,13 +117,13 @@ namespace FlightSimulator
 					}
 					catch (System.IO.IOException e)
 					{
-						messageString += e;
+						MessageString = e.Message;
 						disconnect();
 						break;
 					}
 					catch
 					{
-						messageString = "Could not get HeadingDeg value";
+						MessageString = "Could not get HeadingDeg value";
 						telnetClient.read();
 					}
 					
@@ -133,13 +134,13 @@ namespace FlightSimulator
 					}
 					catch (System.IO.IOException e)
 					{
-						messageString += e;
+						MessageString = e.Message;
 						disconnect();
 						break;
 					}
 					catch
 					{
-						messageString = "Could not get VerticalSpeed value";
+						MessageString = "Could not get VerticalSpeed value";
 						telnetClient.read();
 					}
 
@@ -150,13 +151,13 @@ namespace FlightSimulator
 					}
 					catch (System.IO.IOException e)
 					{
-						messageString += e;
+						MessageString = e.Message;
 						disconnect();
 						break;
 					}
 					catch
 					{
-						messageString = "Could not get GroundSpeed value";
+						MessageString = "Could not get GroundSpeed value";
 						telnetClient.read();
 					}
 
@@ -167,13 +168,13 @@ namespace FlightSimulator
 					}
 					catch (System.IO.IOException e)
 					{
-						messageString += e;
+						MessageString = e.Message;
 						disconnect();
 						break;
 					}
 					catch
 					{
-						messageString = "Could not get IndicatedSpeed value";
+						MessageString = "Could not get IndicatedSpeed value";
 						telnetClient.read();
 					}
 
@@ -184,13 +185,13 @@ namespace FlightSimulator
 					}
 					catch (System.IO.IOException e)
 					{
-						messageString += e;
+						MessageString = e.Message;
 						disconnect();
 						break;
 					}
 					catch
 					{
-						messageString = "Could not get IndicatedAltitude value";
+						MessageString = "Could not get IndicatedAltitude value";
 						telnetClient.read();
 					}
 
@@ -201,13 +202,13 @@ namespace FlightSimulator
 					}
 					catch (System.IO.IOException e)
 					{
-						messageString += e;
+						MessageString = e.Message;
 						disconnect();
 						break;
 					}
 					catch
 					{
-						messageString = "Could not get InternalRollDeg value";
+						MessageString = "Could not get InternalRollDeg value";
 						telnetClient.read();
 					}
 
@@ -218,13 +219,13 @@ namespace FlightSimulator
 					}
 					catch (System.IO.IOException e)
 					{
-						messageString += e;
+						MessageString = e.Message;
 						disconnect();
 						break;
 					}
 					catch
 					{
-						messageString = "Could not get InternalPitchDeg value";
+						MessageString = "Could not get InternalPitchDeg value";
 						telnetClient.read();
 					}
 
@@ -235,13 +236,13 @@ namespace FlightSimulator
 					}
 					catch (System.IO.IOException e)
 					{
-						messageString += e;
+						MessageString = e.Message;
 						disconnect();
 						break;
 					}
 					catch
 					{
-						messageString = "Could not get IdicatedAltitude value";
+						MessageString = "Could not get IdicatedAltitude value";
 						telnetClient.read();
 					}
 
@@ -455,8 +456,16 @@ namespace FlightSimulator
 		{
 			await Task.Run(() =>
 			{
-				this.telnetClient.write("set /controls/engines/current-engine/throttle " + Throttle + "\n");
-				this.telnetClient.read();
+				try
+				{
+					this.telnetClient.write("set /controls/engines/current-engine/throttle " + throttle + "\n");
+					this.telnetClient.read();
+				}
+				catch
+				{
+					MessageString = "Throttle update issue";
+				}
+				
 			});
 			
 		}
@@ -472,7 +481,31 @@ namespace FlightSimulator
 				{
 					
 					aileron = value;
-					this.telnetClient.write("set /controls/flight/aileron " + Aileron + "\n");
+					updateAileron();
+					
+				}
+				catch
+				{
+					if (Stop)
+					{
+						MessageString = "you are disconnected!";
+					}
+					else
+					{
+						MessageString = "Aileron update issue";
+					}
+					
+				}
+				
+			}
+		}
+		public async void updateAileron()
+		{
+			await Task.Run(() =>
+			{
+				try
+				{
+					this.telnetClient.write("set /controls/flight/aileron " + aileron + "\n");
 					this.telnetClient.read();
 				}
 				catch
@@ -480,7 +513,8 @@ namespace FlightSimulator
 					MessageString = "Aileron update issue";
 				}
 				
-			}
+			});
+			
 		}
 
 		public double Elevator
@@ -491,9 +525,25 @@ namespace FlightSimulator
 			}
 			set
 			{
-				elevator = value;
-				this.telnetClient.write("set /controls/flight/elevator " + Elevator + "\n");
-				this.telnetClient.read();
+				try
+				{
+					elevator = value;
+					this.telnetClient.write("set /controls/flight/elevator " + Elevator + "\n");
+					this.telnetClient.read();
+				}
+				catch
+				{
+					if (Stop)
+					{
+						MessageString = "you are disconnected!";
+					}
+					else
+					{
+						MessageString = "Elevator update issue";
+					}
+					
+				}
+				
 
 			}
 		}
@@ -505,9 +555,24 @@ namespace FlightSimulator
 			}
 			set
 			{
-				rudder = value;
-				this.telnetClient.write("set /controls/flight/rudder " + Rudder + "\n");
-				this.telnetClient.read();
+				try
+				{
+					rudder = value;
+					this.telnetClient.write("set /controls/flight/rudder " + Rudder + "\n");
+					this.telnetClient.read();
+				}
+				catch
+				{
+					if (Stop)
+					{
+						MessageString = "you are disconnected!";
+					}
+					else
+					{
+						MessageString = "Rudder update issue";
+					}
+				}
+				
 			}
 		}
 
