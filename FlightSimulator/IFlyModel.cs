@@ -61,8 +61,8 @@ namespace FlightSimulator
 		private double internalPitchDeg;
 		private double gpsAltitude;
 
-		private double latitude;
-		private double longitude;
+		private double latitude = 32.0055;
+		private double longitude = 34.8854;
 		private Location location;
 
 		// Controlling members
@@ -328,7 +328,7 @@ namespace FlightSimulator
 			get { return headingDeg; }
 			set
 			{
-				headingDeg = value;
+				headingDeg = Math.Round(value, 3);
 				NotifyPropertyChanged("HeadingDeg");
 			}
 		}
@@ -337,7 +337,7 @@ namespace FlightSimulator
 			get { return verticalSpeed; }
 			set
 			{
-				verticalSpeed = value;
+				verticalSpeed = Math.Round(value, 3);
 				NotifyPropertyChanged("VerticalSpeed");
 			}
 		}
@@ -346,7 +346,7 @@ namespace FlightSimulator
 			get { return groundSpeed; }
 			set
 			{
-				groundSpeed = value;
+				groundSpeed = Math.Round(value, 3);
 				NotifyPropertyChanged("GroundSpeed");
 			}
 		}
@@ -355,7 +355,7 @@ namespace FlightSimulator
 			get { return airSpeed; }
 			set
 			{
-				airSpeed = value;
+				airSpeed = Math.Round(value, 3);
 				NotifyPropertyChanged("AirSpeed");
 			}
 		}
@@ -364,7 +364,7 @@ namespace FlightSimulator
 			get { return altitude; }
 			set
 			{
-				altitude = value;
+				altitude = Math.Round(value, 3);
 				NotifyPropertyChanged("Altitude");
 			}
 		}
@@ -373,7 +373,7 @@ namespace FlightSimulator
 			get { return internalRollDeg; }
 			set
 			{
-				internalRollDeg = value;
+				internalRollDeg = Math.Round(value, 3);
 				NotifyPropertyChanged("InternalRollDeg");
 			}
 		}
@@ -382,7 +382,7 @@ namespace FlightSimulator
 			get { return internalPitchDeg; }
 			set
 			{
-				internalPitchDeg = value;
+				internalPitchDeg = Math.Round(value, 3);
 				NotifyPropertyChanged("InternalPitchDeg");
 			}
 		}
@@ -391,7 +391,7 @@ namespace FlightSimulator
 			get { return gpsAltitude; }
 			set
 			{
-				gpsAltitude = value;
+				gpsAltitude = Math.Round(value, 3);
 				NotifyPropertyChanged("GpsAltitude");
 			}
 		}
@@ -463,7 +463,15 @@ namespace FlightSimulator
 				}
 				catch
 				{
-					MessageString = "Throttle update issue";
+					if (Stop)
+					{
+						MessageString = "you are disconnected!";
+					}
+					else
+					{
+						MessageString = "Throttle update issue";
+					}
+					
 				}
 				
 			});
@@ -492,6 +500,7 @@ namespace FlightSimulator
 					}
 					else
 					{
+
 						MessageString = "Aileron update issue";
 					}
 					
@@ -510,7 +519,15 @@ namespace FlightSimulator
 				}
 				catch
 				{
-					MessageString = "Aileron update issue";
+					if (Stop)
+					{
+						MessageString = "you are disconnected!";
+					}
+					else
+					{
+						MessageString = "Aileron update issue";
+					}
+					
 				}
 				
 			});
@@ -528,8 +545,8 @@ namespace FlightSimulator
 				try
 				{
 					elevator = value;
-					this.telnetClient.write("set /controls/flight/elevator " + Elevator + "\n");
-					this.telnetClient.read();
+					updateElevator();
+					
 				}
 				catch
 				{
@@ -547,6 +564,15 @@ namespace FlightSimulator
 
 			}
 		}
+		public async void updateElevator()
+		{
+			await Task.Run(() =>
+			{
+				this.telnetClient.write("set /controls/flight/elevator " + Elevator + "\n");
+				this.telnetClient.read();
+			});
+			
+		}
 		public double Rudder
 		{
 			get
@@ -558,8 +584,7 @@ namespace FlightSimulator
 				try
 				{
 					rudder = value;
-					this.telnetClient.write("set /controls/flight/rudder " + Rudder + "\n");
-					this.telnetClient.read();
+					updateRudder();
 				}
 				catch
 				{
@@ -574,6 +599,16 @@ namespace FlightSimulator
 				}
 				
 			}
+		}
+
+		public async void updateRudder()
+		{
+			await Task.Run(() =>
+			{
+				this.telnetClient.write("set /controls/flight/rudder " + Rudder + "\n");
+				this.telnetClient.read();
+			});
+			
 		}
 
 		public bool Stop
