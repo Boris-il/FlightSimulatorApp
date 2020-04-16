@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +25,8 @@ namespace FlightSimulator
         public ConnectionWindow()
         {
             InitializeComponent();
+            ipText.Text = ConfigurationManager.AppSettings["ip"].ToString();
+            portText.Text = ConfigurationManager.AppSettings["port"].ToString();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
