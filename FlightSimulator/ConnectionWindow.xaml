@@ -18,8 +18,8 @@
         </Grid.RowDefinitions>
         <Label VerticalAlignment="Center">IP Address:</Label>
         <Label Grid.Row="1" VerticalAlignment="Center">Port:</Label>
-        <TextBox x:Name="ipText" Grid.Column="1" Margin="5" VerticalAlignment="Center">127.0.0.1</TextBox>
-        <TextBox x:Name="portText" Grid.Row="1" Grid.Column="1" Margin="5" VerticalAlignment="Center">5401</TextBox>
+        <TextBox x:Name="ipText" Grid.Column="1" Margin="5" VerticalAlignment="Center"></TextBox>
+        <TextBox x:Name="portText" Grid.Row="1" Grid.Column="1" Margin="5" VerticalAlignment="Center"></TextBox>
         <Button Grid.ColumnSpan="2" Grid.Row="2" HorizontalAlignment="Center" HorizontalContentAlignment="Center" Margin="10" Click="Button_Click">Connect</Button>
     </Grid>
 </Window>
